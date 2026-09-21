@@ -103,7 +103,7 @@ PTQD/vsc_tvar_lowbit/vsc_time_stats_*.json
 PTQD/imagenet256/**/vsc_time_stats_*.json
 PTQD/imagenet256/**/fid_n.txt
 PTQD/imagenet256/**/sample_batch.txt
-PTQD/imagenet256/logs_download_*.txt
+PTQD/vsc_tvar_lowbit/cifar_w8a8_fid50k_vsc_tvar/
 
 # Saved metrics / logs / manifests
 layerwise_activation_statistics.json
