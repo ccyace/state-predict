@@ -1,0 +1,45 @@
+{
+  "configuration": {
+    "dataset": "CIFAR-10",
+    "quantization": "W8A8",
+    "sampler": "generalized DDIM",
+    "requested_steps": 100,
+    "effective_steps": 96,
+    "skip_type": "quad",
+    "sampler_eta": 1.0,
+    "dt_shift_scale": 0.5,
+    "dt_refresh_n": 8,
+    "t_cutoff": 300,
+    "mean_correction_strength": 0.1,
+    "seed": 1234
+  },
+  "migration_fid_1k": {
+    "dt_only": 32.66494813709528,
+    "dt_plus_mean": 32.84211514372976
+  },
+  "budget_audit": {
+    "states": 19200,
+    "trajectories": 200,
+    "time_only_ratio_median": 4.667852044804022e-05,
+    "time_only_ratio_p95": 0.010093634948134422,
+    "time_only_fraction_over_1": 0.0,
+    "sample_actual_ratio_median": 4.648025787901133e-05,
+    "sample_actual_ratio_p95": 0.011357435025274754,
+    "sample_actual_fraction_over_1": 0.0
+  },
+  "fid_2k": {
+    "dt_plus_mean": 17.258963424994306,
+    "vsc_absorb_0.5": 17.260424690408684,
+    "vsc_absorb_1.0": 17.359122196326325
+  },
+  "fid_delta_vs_mean": {
+    "vsc_absorb_0.5": 0.0014612654143788537,
+    "vsc_absorb_1.0": 0.10015877133201889
+  },
+  "paired_pixel_difference_0_255": {
+    "vsc_absorb_0.5": 1.0069165049791335,
+    "vsc_absorb_1.0": 0.9891157214194536,
+    "changed_images_each_group": 2000
+  },
+  "conclusion": "Time-only PTQD variance schedule calibration is numerically feasible but did not improve FID in this single-seed 2k pilot. Half absorption was effectively neutral; full absorption degraded FID."
+}

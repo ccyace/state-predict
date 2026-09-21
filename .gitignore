@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+
+# Weights / checkpoints / tensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.npz
+*.h5
+*.pkl
+*.pickle
+
+# Images / media / archives
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.mp4
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.pdf
+*.svg
+
+# Experiment / data dumps (keep code & small configs only)
+output/
+models/
+new_real_images/
+lsun_bedrooms/
+cifar10_download/
+cifar10_real/
+cifar10_real_images/
+assets/
+cali_data_dl/
+w4a8_cali_rerun/
+learned_corr_fullstep_celeba_w4a8/
+learned_corr_fullstep_celeba_w8a8/
+qdiff_backup_*/
+state_aware_temporal_joint/runs/
+state_aware_temporal_joint/data/
+state_aware_temporal_joint/output/
+state_aware_temporal_joint/fid_snapshots/
+state_aware_temporal_joint/diagnostics/
+uvit_experiments/**/ckpt*/
+uvit_experiments/**/checkpoints/
+uvit_experiments/**/samples/
+uvit_experiments/**/logs/
+PTQD/**/ckpt*/
+PTQD/**/checkpoints/
+PTQD/**/samples/
+PTQD/logs/
+PTQD/**/*.log
+
+# Local env / IDE
+.env
+.env.*
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+
+# Vendor data / notebooks / run logs (keep source, drop bulk)
+src/taming-transformers/data/
+src/taming-transformers/scripts/*.ipynb
+uvit_experiments/outputs/
+*.nohup
+*.log
+ode_pre_scaling.json
+
+# Agent / editor scratch
+.agents/
+.cursor/
+
+*.JPEG
+*.JPG

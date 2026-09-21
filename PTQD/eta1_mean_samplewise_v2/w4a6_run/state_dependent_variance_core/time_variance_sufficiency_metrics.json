@@ -1,0 +1,18 @@
+{
+  "hypothesis": "The dominant scalar residual variance is determined by timestep.",
+  "variance_estimator": "v_t = E[||r_t||^2 / D | t] on calibration trajectories",
+  "split": {
+    "calibration_trajectories": 20,
+    "test_trajectories": 20,
+    "calibration_states": 1920,
+    "test_states": 1920
+  },
+  "state_level_log_energy_r2": 0.9337733313441277,
+  "per_timestep_log_variance_curve_r2": 0.9935621777549386,
+  "per_timestep_relative_error": {
+    "median": 0.08712177723646164,
+    "p95": 0.17973271384835243,
+    "max": 0.21947647631168365
+  },
+  "interpretation": "A timestep-only scalar variance captures the dominant residual-scale variation on unseen trajectories; this is a sufficiency result, not proof of strict state independence or isotropy."
+}

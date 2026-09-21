@@ -1,0 +1,36 @@
+CMD: /root/miniconda3/bin/python noise_eps_corr/scripts/collect_fullstep_training_data.py --config configs/cifar10.yml --cali_ckpt cifar_w8a8_ckpt.pth --cali_data_path cifar_sd1236_sample2048_allst.pt --weight_bit 8 --act_bit 8 --sm_abit 8 --cali_st 10 --cali_n 256 --quant_act --a_sym --split --num_trajectories 1000 --batch_size 64 --t_max 999 --timesteps 100 --skip_type quad --output state_aware_temporal_joint/experiments/w8a8_cifar10_ddim100_dt_simple_v1/traj_w8a8_ddim100_n1000.pt
+
+Seed set to 1234
+Loading models on cuda ...
+  [load 1/4] building float UNet ...
+  [load 2/4] loading EMA weights: /root/.cache/diffusion_models_converted/ema_diffusion_cifar10_model/model-790000.ckpt
+  [load 2/4] float teacher ready (0.8s)
+  [load 3/4] wrapping QuantModel ...
+  [load 4/4] cali data: cifar_sd1236_sample2048_allst.pt
+           cali file loaded (3.1s)
+           PTQ resume: cifar_w8a8_ckpt.pth (re-init weight/act quant, ~1-3 min) ...
+Loading quantized model checkpoint
+Initializing weight quantization parameters
+Initializing act quantization parameters
+Loading quantized model checkpoint again
+  [load 4/4] quant model ready (11.3s total)
+No --learned_corr_ckpt: open-loop collection (eps_step = eps^q)
+Collecting 1000 trajectories ...
+  open-loop full-step  t_max=999  grid_steps=96  shape=(3,32,32)
+  trajectories 64/1000
+  trajectories 128/1000
+  trajectories 192/1000
+  trajectories 256/1000
+  trajectories 320/1000
+  trajectories 384/1000
+  trajectories 448/1000
+  trajectories 512/1000
+  trajectories 576/1000
+  trajectories 640/1000
+  trajectories 704/1000
+  trajectories 768/1000
+  trajectories 832/1000
+  trajectories 896/1000
+  trajectories 960/1000
+  trajectories 1000/1000
+Saved 96000 samples (96 steps/traj) -> state_aware_temporal_joint/experiments/w8a8_cifar10_ddim100_dt_simple_v1/traj_w8a8_ddim100_n1000.pt

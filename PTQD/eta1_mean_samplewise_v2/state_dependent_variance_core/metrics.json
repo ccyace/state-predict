@@ -1,0 +1,73 @@
+{
+  "definition": {
+    "target": "log(mean((epsilon_fp - epsilon_q - mean_net(c_t))^2)) per state",
+    "time_only": "per-nominal-timestep lookup fitted on calibration trajectories",
+    "state_time": "exact time lookup plus standardized ridge correction from inference-observable state summaries and time interactions",
+    "variance_form_tested": "Sigma_u(c_t) = v(c_t) I",
+    "strength": 1.0
+  },
+  "split": {
+    "calibration_rule": "traj_id % 10 == 0",
+    "test_rule": "traj_id % 10 == 5",
+    "calibration_trajectories": 50,
+    "test_trajectories": 50,
+    "calibration_states": 4800,
+    "test_states": 4800
+  },
+  "time_only": {
+    "r2_log_variance": 0.9653755168672195,
+    "mae_log_variance": 0.17868863607446353,
+    "rmse_log_variance": 0.25501752845828973
+  },
+  "state_plus_time": {
+    "r2_log_variance": 0.9618515358854173,
+    "mae_log_variance": 0.18431283114581076,
+    "rmse_log_variance": 0.2676806089990036
+  },
+  "improvement": {
+    "delta_r2": -0.0035239809818021772,
+    "relative_mae_reduction": -0.031474833514334444,
+    "trajectory_bootstrap_delta_r2": {
+      "repeats": 2000,
+      "median": -0.0034195474036453066,
+      "ci95": [
+        -0.007800731423452556,
+        0.001053362459429837
+      ],
+      "probability_delta_positive": 0.0665
+    }
+  },
+  "state_model_risk_quintiles": [
+    {
+      "n": 960,
+      "predicted_variance": 0.00017454927354253012,
+      "observed_variance": 0.000204112206120044
+    },
+    {
+      "n": 960,
+      "predicted_variance": 0.0002247505881995877,
+      "observed_variance": 0.00023160825367085636
+    },
+    {
+      "n": 960,
+      "predicted_variance": 0.0003571488773526758,
+      "observed_variance": 0.00033278539194725454
+    },
+    {
+      "n": 960,
+      "predicted_variance": 0.0007847744191188562,
+      "observed_variance": 0.0007612937479279935
+    },
+    {
+      "n": 960,
+      "predicted_variance": 0.009167914689473356,
+      "observed_variance": 0.00984385795891285
+    }
+  ],
+  "observed_top_to_bottom_variance_ratio": 48.227679010648714,
+  "decision": {
+    "state_information_beyond_time_supported": false,
+    "criterion": "trajectory-bootstrap 95% CI of Delta R2 is entirely above zero"
+  },
+  "scope": "This tests state-dependent scalar residual energy, not Gaussianity or exact spatial/channel isotropy."
+}
