@@ -1,4 +1,0 @@
-FID: 3.637947641737071
-
-Command:
-python -m pytorch_fid new_real_images/cifar10_python.npz state_aware_temporal_joint/experiments/w8a8_cifar10_ddim100_dt_simple_v1/images_50k --device cuda:0

@@ -77,6 +77,36 @@ uvit_experiments/outputs/
 *.log
 ode_pre_scaling.json
 
+# Plots and offline analysis (not part of sampling / quantization / correction)
+scripts/plot_*.py
+qdiff/denoise_plot_utils.py
+PTQD/eta1_mean_samplewise_v2/plot_*.py
+PTQD/eta1_mean_samplewise_v2/visualize_*.py
+PTQD/eta1_mean_samplewise_v2/analyze_*.py
+uvit_experiments/plot_*.py
+uvit_experiments/run_add_a6_to_fair_plot.sh
+uvit_experiments/run_fair_w4_vs_w8_error_dist.sh
+state_aware_temporal_joint/analyze_*.py
+scripts/diagnose_nn_residual.py
+scripts/compute_residual_skew_kurt_budget.py
+noise_eps_corr/scripts/analyze_qir_innovation.py
+1.py
+*.docx
+*.tex
+*.ipynb
+
+# Saved metrics / logs / manifests
+layerwise_activation_statistics.json
+**/*metrics*.json
+**/*analysis*.json
+**/*results*.json
+**/manifest.json
+**/history.json
+**/*fid*.txt
+**/*.log
+**/*.nohup
+**/*.csv
+
 # Agent / editor scratch
 .agents/
 .cursor/
