@@ -91,9 +91,19 @@ scripts/diagnose_nn_residual.py
 scripts/compute_residual_skew_kurt_budget.py
 noise_eps_corr/scripts/analyze_qir_innovation.py
 1.py
+FID.py
+compute_IS_torch_fidelity.py
+scripts/sweep_fid_noise.py
 *.docx
 *.tex
 *.ipynb
+*.stats.json
+PTQD/vsc_time_stats_*.json
+PTQD/vsc_tvar_lowbit/vsc_time_stats_*.json
+PTQD/imagenet256/**/vsc_time_stats_*.json
+PTQD/imagenet256/**/fid_n.txt
+PTQD/imagenet256/**/sample_batch.txt
+PTQD/imagenet256/logs_download_*.txt
 
 # Saved metrics / logs / manifests
 layerwise_activation_statistics.json
