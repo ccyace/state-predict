@@ -40,5 +40,44 @@ python state_aware_temporal_joint/sample_50k.py \
   --max_images 50000 --batch_size 64 --seed 1234 --skip_fid \
   --output_dir PTQD/vsc_tvar/cifar_w4a7_vsc_tvar_50k/vsc_tvar_50k
 
-python -m pytorch_fid new_real_images/real47500_vsc2500_fid_stats.npz \
-  PTQD/vsc_tvar/cifar_w4a7_vsc_tvar_50k/vsc_tvar_50k --device cuda:0
+U-Vit cifar w8a8
+python state_aware_temporal_joint/sample_50k.py \
+  --backbone uvit \
+  --fp_ckpt cifar10_uvit_small.pth \
+  --cali_ckpt uvit_experiments/checkpoints/uvit_w8a8_ckpt.pth \
+  --cali_data_path cifar_sd1236_sample2048_allst.pt \
+  --weight_bit 8 --act_bit 8 --sm_abit 8 \
+  --cali_st 10 --cali_n 256 --quant_act --a_sym \
+  --disable_adapter --disable_corrector \
+  --dt_only_infer --dt_mode refresh \
+  --joint_dt_ckpt uvit_experiments/outputs/phase2_w8a8/dt_ckpt/ckpt_best.pt \
+  --time_residual_ckpt uvit_experiments/outputs/phase2_w8a8/mean_ckpt/ckpt_best.pt \
+  --time_residual_strength 0.1 \
+  --eta 1.0 --timesteps 100 --skip_type quad \
+  --dt_eta 0.5 --dt_carry_max 20 --t_cutoff 300 --dt_refresh_n 8 \
+  --vsc_stats uvit_experiments/outputs/phase2_w8a8/vsc_time_stats_eta1_tvar.pt \
+  --vsc_var_field var_mle --vsc_absorb_strength 1.0 --vsc_max_budget_fraction 0.9 \
+  --max_images 50000 --batch_size 64 --seed 1234 \
+  --output_dir uvit_experiments/outputs/phase3_vsc_tvar_50k
+
+U-Vit cifar w4a8
+python state_aware_temporal_joint/sample_50k.py \
+  --backbone uvit \
+  --fp_ckpt cifar10_uvit_small.pth \
+  --cali_ckpt uvit_experiments/checkpoints/uvit_w4a8_ckpt.pth \
+  --cali_data_path cifar_sd1236_sample2048_allst.pt \
+  --weight_bit 4 --act_bit 8 --sm_abit 8 \
+  --cali_st 10 --cali_n 256 --quant_act --a_sym \
+  --disable_adapter --disable_corrector \
+  --dt_only_infer --dt_mode refresh \
+  --joint_dt_ckpt uvit_experiments/outputs/phase2_w4a8/dt_ckpt/ckpt_best.pt \
+  --time_residual_ckpt uvit_experiments/outputs/phase2_w4a8/mean_ckpt/ckpt_best.pt \
+  --time_residual_strength 0.1 \
+  --eta 1.0 --timesteps 100 --skip_type quad \
+  --dt_eta 0.5 --dt_carry_max 20 --t_cutoff 300 --dt_refresh_n 8 \
+  --vsc_stats uvit_experiments/outputs/phase2_w4a8/vsc_time_stats_eta1_tvar.pt \
+  --vsc_var_field var_mle --vsc_absorb_strength 1.0 --vsc_max_budget_fraction 0.9 \
+  --max_images 50000 --batch_size 64 --seed 1234 \
+  --fid_ref new_real_images/real47500_vsc2500_fid_stats.npz \
+  --fid_log uvit_experiments/outputs/phase3_w4a8_vsc_tvar_50k/logs/fid.log \
+  --output_dir uvit_experiments/outputs/phase3_w4a8_vsc_tvar_50k
