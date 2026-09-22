@@ -1,7 +1,7 @@
 LDM4 on LSUN-Bedroom256×256, steps=200,η=1.0
 python scripts/sample_diffusion_ldm.py \
   -r models/ldm/lsun_beds256/model.ckpt \
-  -n 3000 --batch_size 8 -c 200 -e 1.0 --seed 41 \
+  -n 3000 --batch_size 4 -c 200 -e 1.0 --seed 41 \
   --ptq --resume --quant_act --act_bit 8 --a_sym --weight_bit 4 \
   --cali_ckpt bedroom_w4a8_ckpt.pth \
   --enable_learned_noise_corr \
