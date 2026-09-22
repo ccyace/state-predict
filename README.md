@@ -16,7 +16,7 @@ python state_aware_temporal_joint/collect_dt_corrected_residual_data.py \
   --dt_ckpt state_aware_temporal_joint/experiments/w8a8_cifar10_ddim100_dt_simple_v1/checkpoints/ckpt_best.pt \
   --time_residual_ckpt PTQD/eta1_mean_samplewise_v2/w4a7_run/checkpoints/ckpt_best.pt \
   --time_residual_strength 0.1 \
-  --num_trajectories 200 --batch_size 64 \
+  --num_trajectories 200 --batch_size 16 \
   --timesteps 100 --skip_type quad --eta 1.0 \
   --dt_eta 0.5 --dt_max 20 --t_cutoff 300 --n_refresh 8 \
   --cali_ckpt cifar_w4a7_ckpt.pth --weight_bit 4 --act_bit 7 --seed 1234
@@ -37,7 +37,7 @@ python state_aware_temporal_joint/sample_50k.py \
   --vsc_stats PTQD/vsc_tvar/vsc_time_stats_eta1_tvar_w4a7.pt \
   --vsc_var_field var_mle --vsc_absorb_strength 1.0 --vsc_max_budget_fraction 0.9 \
   --cali_ckpt cifar_w4a7_ckpt.pth --weight_bit 4 --act_bit 7 \
-  --max_images 50000 --batch_size 64 --seed 1234 --skip_fid \
+  --max_images 50000 --batch_size 16 --seed 1234 --skip_fid \
   --output_dir PTQD/vsc_tvar/cifar_w4a7_vsc_tvar_50k/vsc_tvar_50k
 
 U-Vit cifar w8a8
@@ -57,7 +57,7 @@ python state_aware_temporal_joint/sample_50k.py \
   --dt_eta 0.5 --dt_carry_max 20 --t_cutoff 300 --dt_refresh_n 8 \
   --vsc_stats uvit_experiments/outputs/phase2_w8a8/vsc_time_stats_eta1_tvar.pt \
   --vsc_var_field var_mle --vsc_absorb_strength 1.0 --vsc_max_budget_fraction 0.9 \
-  --max_images 50000 --batch_size 64 --seed 1234 \
+  --max_images 50000 --batch_size 16 --seed 1234 \
   --output_dir uvit_experiments/outputs/phase3_vsc_tvar_50k
 
 U-Vit cifar w4a8
@@ -77,7 +77,7 @@ python state_aware_temporal_joint/sample_50k.py \
   --dt_eta 0.5 --dt_carry_max 20 --t_cutoff 300 --dt_refresh_n 8 \
   --vsc_stats uvit_experiments/outputs/phase2_w4a8/vsc_time_stats_eta1_tvar.pt \
   --vsc_var_field var_mle --vsc_absorb_strength 1.0 --vsc_max_budget_fraction 0.9 \
-  --max_images 50000 --batch_size 64 --seed 1234 \
+  --max_images 50000 --batch_size 16 --seed 1234 \
   --fid_ref new_real_images/real47500_vsc2500_fid_stats.npz \
   --fid_log uvit_experiments/outputs/phase3_w4a8_vsc_tvar_50k/logs/fid.log \
   --output_dir uvit_experiments/outputs/phase3_w4a8_vsc_tvar_50k
