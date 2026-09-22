@@ -1,13 +1,16 @@
 LDM4 on LSUN-Bedroom256×256, steps=200,η=1.0
 python scripts/sample_diffusion_ldm.py \
-  -r models/ldm/lsun_beds256/model.ckpt -n 3000 --batch_size 2 \
-  -c 200 -e 1.0 --seed 41 \
+  -r models/ldm/lsun_beds256/model.ckpt \
+  -n 3000 --batch_size 8 -c 200 -e 1.0 --seed 41 \
   --ptq --resume --quant_act --act_bit 8 --a_sym --weight_bit 4 \
   --cali_ckpt bedroom_w4a8_ckpt.pth \
   --enable_learned_noise_corr \
   --learned_corr_ckpt output/w4a8_bedroom_compare/learned_corr/ckpt_best.pt \
   --learned_corr_t_cut 999 --learned_corr_alpha 1.0 \
-  -l output/w4a8_bedroom_compare/sample_learned_3k
+  --vsc_stats output/w4a8_bedroom_compare/vsc_time_stats_eta1_after_learned_tvar_ldmgrid.pt \
+  --vsc_var_field var_mle \
+  --vsc_absorb_strength 1.0 --vsc_max_budget_fraction 0.9 \
+  -l output/w4a8_bedroom_compare/sample_learned_tvar_3k
 
 
 cifar10 w4a7:
