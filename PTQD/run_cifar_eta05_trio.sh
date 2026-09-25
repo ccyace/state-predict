@@ -9,7 +9,9 @@
 #   STEP=fp|w8a8|corr_vsc|fid|all
 
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
 export PYTHONPATH="${PWD}:${PYTHONPATH:-}"
 
 ETA="${ETA:-0.5}"

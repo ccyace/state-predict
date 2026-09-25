@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Resume W4A8 from Phase 2 (Phase 1 already done: FID 14.7438).
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 LOG="uvit_experiments/outputs/w4a8_resume.nohup"
 mkdir -p uvit_experiments/outputs

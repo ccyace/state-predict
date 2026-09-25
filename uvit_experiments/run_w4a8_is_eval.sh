@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Compute IS for existing W4A8 50k PNG (no resampling).
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 OUT="uvit_experiments/outputs/w4a8_is_eval"
 LOGDIR="${OUT}/logs"

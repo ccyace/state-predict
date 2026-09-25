@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Phase 0: U-ViT FP baseline — DDIM 100 quad, eta=1, 50k, FID.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 echo "=== [0] Download checkpoint ==="
 bash uvit_experiments/download_ckpt.sh

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Re-sample W8A8 experiments (PNG deleted after FID) and compute Inception Score.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
-FP_CKPT="/root/autodl-tmp/ODE-scale/cifar10_uvit_small.pth"
+FP_CKPT="${FP_CKPT:-cifar10_uvit_small.pth}"
 Q_CKPT="uvit_experiments/checkpoints/uvit_w8a8_ckpt.pth"
 CALI_DATA="cifar_sd1236_sample2048_allst.pt"
 PHASE2="uvit_experiments/outputs/phase2_w8a8"

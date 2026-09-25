@@ -291,13 +291,13 @@ def parse_args():
     p.add_argument(
         "--input",
         type=str,
-        default=r"C:\Users\ASUS\Desktop\ODE-scale\real_images",
+        default="real_images",
         help="真实图像目录",
     )
     p.add_argument(
         "--output",
         type=str,
-        default=r"C:\Users\ASUS\Desktop\ODE-scale\real_images_last10k_noise.npz",
+        default="real_images_last10k_noise.npz",
         help="单次导出时的输出 .npz",
     )
     p.add_argument(

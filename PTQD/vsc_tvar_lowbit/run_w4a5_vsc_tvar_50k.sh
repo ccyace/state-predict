@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # W4A5: vsc_tvar (Student-t var_mle) 50k — same protocol as W4A6/7/8.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT"
 
 DT_CKPT="state_aware_temporal_joint/experiments/w8a8_cifar10_ddim100_dt_simple_v1/checkpoints/ckpt_best.pt"
 REF="new_real_images/real47500_vsc2500_fid_stats.npz"

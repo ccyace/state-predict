@@ -3,7 +3,7 @@
 
 示例（处理 w4a8test）:
   python scripts/folder_to_npz.py \\
-    --root C:/Users/ASUS/Desktop/ODE-scale/w4a8test
+    --root w4a8test
 
 结果:
   w4a8test/
@@ -83,7 +83,7 @@ def parse_args():
     p.add_argument(
         "--root",
         type=str,
-        default=r"C:\Users\ASUS\Desktop\ODE-scale\w4a8test",
+        default="w4a8test",
         help="样本根目录（图像当前在此目录，或已在其 img/ 下）",
     )
     p.add_argument(

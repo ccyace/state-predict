@@ -12,15 +12,15 @@
 
 set -euo pipefail
 
-ROOT="/root/autodl-tmp/ODE-scale"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "${ROOT}"
 export PYTHONPATH="${ROOT}/src/taming-transformers:${ROOT}:${PYTHONPATH:-}"
 
 FP_CKPT="${FP_CKPT:-models/ldm/cin256/model.ckpt}"
 LDM_CONFIG="${LDM_CONFIG:-configs/latent-diffusion/cin256-v2.yaml}"
-EFFICIENTDM_CKPT="${EFFICIENTDM_CKPT:-/root/ODEscale/quantw4a4_20steps_efficientdm.pth}"
+EFFICIENTDM_CKPT="${EFFICIENTDM_CKPT:-}"  # set to EfficientDM W4A4 ckpt path
 EFFICIENTDM_STEPS="${EFFICIENTDM_STEPS:-20}"
-EFFICIENTDM_ROOT="${EFFICIENTDM_ROOT:-/root/autodl-tmp/EfficientDM}"
+EFFICIENTDM_ROOT="${EFFICIENTDM_ROOT:-${EFFICIENTDM_HOME:-../EfficientDM}}"
 
 TAG="${TAG:-efficientdm_w4a4}"
 OUT="${OUT:-PTQD/imagenet256/cin256_${TAG}_learned_corr_tvar}"
@@ -51,7 +51,7 @@ SAMPLE_LOG="${OUT}/sample_learned_vsc"
 FID_STAGING="${OUT}/fid_staging/learned_vsc_gen"
 
 FID_N="${FID_N:-10000}"
-FID_REF="${FID_REF:-/root/autodl-tmp/dit-hsq/checkpoints/VIRTUAL_imagenet256_labeled.npz}"
+FID_REF="${FID_REF:-}"  # e.g. VIRTUAL_imagenet256_labeled.npz
 
 STEP="${STEP:-all}"
 SKIP_COLLECT="${SKIP_COLLECT:-0}"

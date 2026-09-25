@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # W8A8 CIFAR: BRECQ rebuild (cali_n=512, cali_iters_a=7000) -> 50k sample -> FID
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 OUT_ROOT=output/cifar_w8a8_cali_n512_iters_a7000
 LOG_DIR="${OUT_ROOT}/logs"
@@ -37,7 +38,7 @@ python scripts/sample_diffusion_ddim.py \
   --cali_batch_size 32 \
   --cali_n 512 \
   --cali_iters_a 7000 \
-  --cali_data_path /root/autodl-tmp/ODE-scale/cifar_sd1236_sample2048_allst.pt \
+  --cali_data_path cifar_sd1236_sample2048_allst.pt \
   --max_images 50000 \
   --seed 1234 \
   -l "${OUT_ROOT}"

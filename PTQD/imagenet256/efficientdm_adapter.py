@@ -21,7 +21,7 @@ import torch
 import torch.nn as nn
 
 
-DEFAULT_EFFICIENTDM_ROOT = "/root/autodl-tmp/EfficientDM"
+DEFAULT_EFFICIENTDM_ROOT = os.environ.get("EFFICIENTDM_HOME", os.environ.get("EFFICIENTDM_ROOT", ""))
 
 
 def _ensure_efficientdm_on_path(efficientdm_root: str) -> str:
@@ -48,7 +48,7 @@ def attach_efficientdm(
     num_steps: int = 20,
     weight_bit: int = 4,
     act_bit: int = 4,
-    efficientdm_root: str = DEFAULT_EFFICIENTDM_ROOT,
+    efficientdm_root: str = "",
     device: Optional[torch.device] = None,
 ) -> nn.Module:
     """Replace ``ldm_model.model.diffusion_model`` with EfficientDM quantized UNet.
@@ -63,7 +63,12 @@ def attach_efficientdm(
         TALSQ length; must match ckpt (20 for quantw4a4_20steps_efficientdm.pth).
         Sampling ``-c`` / DDIM steps should equal this value.
     """
-    _ensure_efficientdm_on_path(efficientdm_root)
+    root = (efficientdm_root or DEFAULT_EFFICIENTDM_ROOT or "").strip()
+    if not root:
+        raise ValueError(
+            "EfficientDM root not set; pass efficientdm_root=... or set EFFICIENTDM_HOME"
+        )
+    _ensure_efficientdm_on_path(root)
     from quant_scripts.quant_model import QuantModel_intnlora
     from quant_scripts.quant_layer import QuantModule_intnlora, SimpleDequantizer
 

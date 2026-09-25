@@ -8,8 +8,8 @@
 
 示例:
   python scripts/compute_fid_npz.py \\
-    --npz1 C:/Users/ASUS/Desktop/ODE-scale/real_images_last10k_noise.npz \\
-    --npz2 C:/Users/ASUS/Desktop/ODE-scale/w4a8test/images.npz
+    --npz1 real_images_last10k_noise.npz \\
+    --npz2 w4a8test/images.npz
 
   # 两边若已含 mu/sigma，会跳过 Inception，几乎秒出
 """

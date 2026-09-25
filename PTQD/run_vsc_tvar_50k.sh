@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
-cd /root/autodl-tmp/ODE-scale
 OUT=PTQD/fid50k_vsc_tvar
 mkdir -p "$OUT/logs"
 

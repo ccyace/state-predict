@@ -6,8 +6,8 @@
 
 示例:
   python scripts/compute_fid_tensor.py \\
-    --real C:/Users/ASUS/Desktop/ODE-scale/real_images \\
-    --gen  C:/Users/ASUS/Desktop/ODE-scale/w4a8test_250
+    --real real_images \\
+    --gen  w4a8test_250
 
   # 首次加载后缓存为 .pt，下次更快
   python scripts/compute_fid_tensor.py --real real_images --gen w4a8test_250 --save_pt

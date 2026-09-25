@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Wait for W4A8 full pipeline, then run W8A8 IS evaluation (requires GPU re-sampling).
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 ORCH_LOG="uvit_experiments/outputs/w8a8_is_after_w4a8.nohup"
 mkdir -p uvit_experiments/outputs

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # U-ViT W4A6: mean residual corrector ONLY (no δt) + 50k sample + FID.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
-FP_CKPT="/root/autodl-tmp/ODE-scale/cifar10_uvit_small.pth"
+FP_CKPT="${FP_CKPT:-cifar10_uvit_small.pth}"
 Q_CKPT="uvit_experiments/checkpoints/uvit_w4a6_ckpt.pth"
 CALI_DATA="cifar_sd1236_sample2048_allst.pt"
 OUT="uvit_experiments/outputs/phase2_w4a6_mean_only"

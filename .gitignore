@@ -59,6 +59,8 @@ PTQD/**/checkpoints/
 PTQD/**/samples/
 PTQD/logs/
 PTQD/**/*.log
+PTQD/imagenet256/logs_*.txt
+PTQD/imagenet256/**/pipeline_nohup.log
 
 # Local env / IDE
 .env

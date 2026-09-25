@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Wait for W4A8 dt-only 50k sampling, then FID vs origin-cifar-10-python_fid_mu_sigma.npz.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 OUT="PTQD/w4a8_dt_only_eta1_50k"
 LOG="PTQD/logs/sample_w4a8_dt_only_eta1_50k.log"

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # CIFAR-10 W4A8: DDIM-100, η=1, dt-head only (no ε-mean / VSC), 50k samples.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 OUT="${OUT:-PTQD/w4a8_dt_only_eta1_50k}"
 LOGDIR="${OUT}/logs"

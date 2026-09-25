@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Resume cin256 W4A8 learned_corr+tvar pipeline from last completed stage.
 set -euo pipefail
-ROOT="/root/autodl-tmp/ODE-scale"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 OUT="${OUT:-PTQD/imagenet256/cin256_w4a8_learned_corr_tvar}"
 cd "$ROOT"
 
@@ -25,9 +25,10 @@ if [[ -d "${OUT}/fid_staging/learned_vsc_gen" ]] && [[ "$(find "${OUT}/fid_stagi
 fi
 
 echo "RESUME SKIP_COLLECT=${SKIP_COLLECT} SKIP_TRAIN=${SKIP_TRAIN} SKIP_ESTIMATE=${SKIP_ESTIMATE}"
+# CALI_CKPT: set env to ImageNet W4A8 cali ckpt before resume.
 WBIT=4 ABIT=8 QUANT_ACT=1 SKIP_PTQ=1 SKIP_CALI=1 \
   SKIP_COLLECT="${SKIP_COLLECT}" SKIP_TRAIN="${SKIP_TRAIN}" SKIP_ESTIMATE="${SKIP_ESTIMATE}" \
-  CALI_CKPT=/root/ODEscale/Imagenet_W4A8_ckpt.pth \
+  CALI_CKPT="${CALI_CKPT:-}" \
   OUT="${OUT}" SAMPLE_BATCH=3 N_TRAJ=128 FID_N=10000 \
   nohup bash PTQD/imagenet256/run_cin256_learned_corr_tvar.sh \
   >> "${OUT}/pipeline_nohup.log" 2>&1 &

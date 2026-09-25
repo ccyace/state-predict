@@ -2,7 +2,7 @@
 # Supervise cin256 W8-only pipeline; auto-resume on crash.
 set -euo pipefail
 
-ROOT="/root/autodl-tmp/ODE-scale"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 OUT="${OUT:-PTQD/imagenet256/cin256_w8_learned_corr_tvar}"
 INTERVAL="${INTERVAL:-120}"
 SUP_LOG="${OUT}/logs/supervisor.log"

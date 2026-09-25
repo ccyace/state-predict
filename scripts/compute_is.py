@@ -2,7 +2,7 @@
 Compute Inception Score (IS) for a folder of images using torch-fidelity.
 
 Example (your run folder):
-  python scripts/compute_is.py --samples "C:/Users/ASUS/Desktop/q-diffusion-master/output_cali_iters_a_7000/samples/2026-04-08-10-21-11/img"
+  python scripts/compute_is.py --samples path/to/samples/img
 
 Use only the first N images (natural sort):
   python scripts/compute_is.py --samples path/to/img --max_images 5000

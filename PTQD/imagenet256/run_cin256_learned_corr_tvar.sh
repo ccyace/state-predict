@@ -17,7 +17,7 @@
 
 set -euo pipefail
 
-ROOT="/root/autodl-tmp/ODE-scale"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "${ROOT}"
 export PYTHONPATH="${ROOT}/src/taming-transformers:${ROOT}:${PYTHONPATH:-}"
 
@@ -83,7 +83,7 @@ SAMPLE_LOG="${OUT}/sample_learned_vsc"
 FID_STAGING="${OUT}/fid_staging/learned_vsc_gen"
 
 FID_N="${FID_N:-3000}"
-FID_REF="${FID_REF:-/root/autodl-tmp/dit-hsq/checkpoints/VIRTUAL_imagenet256_labeled.npz}"
+FID_REF="${FID_REF:-}"  # e.g. VIRTUAL_imagenet256_labeled.npz
 
 STEP="${STEP:-all}"
 SKIP_CALI="${SKIP_CALI:-0}"

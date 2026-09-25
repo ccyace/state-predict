@@ -495,8 +495,8 @@ def get_parser():
     parser.add_argument(
         "--efficientdm_root",
         type=str,
-        default="/root/autodl-tmp/EfficientDM",
-        help="path to ThisisBillhe/EfficientDM checkout",
+        default="",
+        help="path to EfficientDM checkout (or set EFFICIENTDM_HOME)",
     )
     parser.add_argument("--efficientdm_weight_bit", type=int, default=4)
     parser.add_argument("--efficientdm_act_bit", type=int, default=4)

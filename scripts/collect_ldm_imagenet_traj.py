@@ -181,7 +181,7 @@ def main():
         help="If set, load EfficientDM W4A4 (etc.) instead of qdiff --cali_ckpt",
     )
     p.add_argument("--efficientdm_steps", type=int, default=20)
-    p.add_argument("--efficientdm_root", type=str, default="/root/autodl-tmp/EfficientDM")
+    p.add_argument("--efficientdm_root", type=str, default="", help="EfficientDM checkout (or set EFFICIENTDM_HOME)")
     p.add_argument("--efficientdm_weight_bit", type=int, default=4)
     p.add_argument("--efficientdm_act_bit", type=int, default=4)
     args = p.parse_args()

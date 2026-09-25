@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Phase 1: U-ViT W4A8 PTQ + 50k DDIM sampling + FID.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
-FP_CKPT="/root/autodl-tmp/ODE-scale/cifar10_uvit_small.pth"
+FP_CKPT="${FP_CKPT:-cifar10_uvit_small.pth}"
 CALI_DATA="cifar_sd1236_sample2048_allst.pt"
 Q_CKPT="uvit_experiments/checkpoints/uvit_w4a8_ckpt.pth"
 OUT="uvit_experiments/outputs/phase1_w4a8_ddim100_eta1_50k"

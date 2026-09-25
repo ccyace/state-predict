@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # U-ViT W4A8 full pipeline: Phase 1 (PTQ+50k) -> Phase 2 (dt/mean/tvar) -> Phase 3 (vsc_tvar 50k).
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 ROOT_LOG="uvit_experiments/outputs/w4a8_full_pipeline.nohup"
 mkdir -p uvit_experiments/outputs

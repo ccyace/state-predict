@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Wait for W8A8 Phase 3 to finish, free disk, then run U-ViT W4A8 full pipeline.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 W8A8_P3="uvit_experiments/outputs/phase3_vsc_tvar_50k"
 W8A8_P3_LOG="${W8A8_P3}/pipeline.nohup"
@@ -47,7 +48,7 @@ if [ -f "${W8A8_FID_LOG}" ]; then
 fi
 
 echo "========== disk cleanup before W4A8 $(date -Iseconds) =========="
-df -h /root/autodl-tmp | tail -1
+df -h . | tail -1
 
 # Free space: drop W8A8 large traj + phase1/phase3 png (keep ckpts, logs, README)
 P2W8="uvit_experiments/outputs/phase2_w8a8"
@@ -66,7 +67,7 @@ if [ -d "${W8A8_P3}" ]; then
   find "${W8A8_P3}" -maxdepth 1 -name '*.png' -delete 2>/dev/null || true
 fi
 
-df -h /root/autodl-tmp | tail -1
+df -h . | tail -1
 
 echo "========== start W4A8 full pipeline $(date -Iseconds) =========="
 bash uvit_experiments/run_w4a8_full_pipeline.sh

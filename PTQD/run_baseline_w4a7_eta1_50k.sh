@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # W4A7 η=1 baseline 50k: pure PTQ DDIM, no dt/mean/VSC/corrector.
 set -euo pipefail
-cd /root/autodl-tmp/ODE-scale
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
 
 OUT=PTQD/baseline_w4a7_eta1_50k
 LOG=PTQD/logs/baseline_w4a7_eta1_50k.log
