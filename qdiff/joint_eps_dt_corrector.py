@@ -176,14 +176,20 @@ def load_eps_weights_into_joint(net: DeltaEpsDtNet, eps_ckpt: str) -> None:
 
 def joint_correction_loss(
     eq, ef, delta_eps, delta_t, dt_star, t, *,
-    lambda_mse=1.0, lambda_cos=2.0, lambda_sr=0.3, lambda_dt=0.3, t_cut=50, dt_only=False,
+    lambda_mse=1.0, lambda_geo=0.5, lambda_dt=0.3, t_cut=50, dt_only=False,
+    lambda_cos=None, lambda_sr=None,
 ):
     if dt_only:
         loss_dt = F.smooth_l1_loss(delta_t, dt_star)
         return loss_dt, {"loss": float(loss_dt.item()), "loss_dt": float(loss_dt.item()),
                          "dt_mae": float((delta_t - dt_star).abs().mean().item())}
     loss_eps, stats = correction_loss(
-        eq, ef, delta_eps, t, lambda_mse=lambda_mse, lambda_cos=lambda_cos, lambda_sr=lambda_sr, t_cut=t_cut,
+        eq, ef, delta_eps, t,
+        lambda_mse=lambda_mse,
+        lambda_geo=lambda_geo,
+        lambda_cos=lambda_cos,
+        lambda_sr=lambda_sr,
+        t_cut=t_cut,
     )
     loss_dt = F.smooth_l1_loss(delta_t, dt_star)
     with torch.no_grad():

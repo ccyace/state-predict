@@ -24,8 +24,9 @@ class LossConfig:
     lambda_align: float = 0.0
     lambda_adapter: float = 0.1
     lambda_mse: float = 1.0
-    lambda_dir: float = 2.0
-    lambda_str: float = 0.3
+    lambda_geo: float = 0.5
+    lambda_dir: float | None = None
+    lambda_str: float | None = None
 
 
 def freeze(module: nn.Module, frozen=True):
@@ -72,7 +73,7 @@ def train_step(
     # Detaching here is essential in stage C: only the old corrector is fine-tuned.
     corr_input = eps_adapted.detach() if stage == Stage.CORRECTOR else eps_adapted
     residual = framework.corrector_net(x, corr_input, t)
-    kwargs = dict(lambda_mse=loss_cfg.lambda_mse, lambda_dir=loss_cfg.lambda_dir, lambda_str=loss_cfg.lambda_str)
+    kwargs = dict(lambda_mse=loss_cfg.lambda_mse, lambda_geo=loss_cfg.lambda_geo, lambda_dir=loss_cfg.lambda_dir, lambda_str=loss_cfg.lambda_str)
     if stage == Stage.CORRECTOR:
         return corrector_loss(corr_input, eps_teacher, residual, **kwargs)
     return joint_loss(

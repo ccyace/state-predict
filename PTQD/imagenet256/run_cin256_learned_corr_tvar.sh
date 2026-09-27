@@ -258,7 +258,7 @@ if should_run train && [[ "${SKIP_TRAIN}" != "1" ]]; then
       --batch_size "${CORR_BATCH}" \
       --t_cut "${CORR_T_CUT}" \
       --alpha "${CORR_ALPHA}" \
-      --lambda_mse 1.0 --lambda_cos 2.0 --lambda_sr 0.3 \
+      --lambda_mse 1.0 --lambda_geo 0.5 \
       2>&1 | tee "${LOGDIR}/train_corrector.log"
   fi
 else

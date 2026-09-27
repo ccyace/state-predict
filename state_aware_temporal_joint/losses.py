@@ -23,13 +23,19 @@ def alignment_loss(eps_unadapted, eps_adapted, eps_teacher):
     return (1.0 - _cos(contribution, target)).mean()
 
 
-def corrector_loss(eps_adapted, eps_teacher, residual, lambda_mse=1.0, lambda_dir=2.0, lambda_str=0.3):
+def corrector_loss(eps_adapted, eps_teacher, residual, lambda_mse=1.0, lambda_geo=0.5, lambda_dir=None, lambda_str=None):
+    """Paper form: L_err + lambda_geo*(L_dir+L_mag). Legacy lambda_dir/str still accepted."""
     target = eps_teacher - eps_adapted
     corrected = eps_adapted + residual
     mse = F.mse_loss(residual, target)
     direction = (1.0 - _cos(corrected, eps_teacher)).mean()
     strength = (corrected.flatten(1).norm(dim=1) / eps_teacher.flatten(1).norm(dim=1).clamp_min(1e-8) - 1).abs().mean()
-    loss = lambda_mse * mse + lambda_dir * direction + lambda_str * strength
+    if lambda_dir is None and lambda_str is None:
+        loss = lambda_mse * mse + float(lambda_geo) * (direction + strength)
+    else:
+        ld = 2.0 if lambda_dir is None else float(lambda_dir)
+        ls = 0.3 if lambda_str is None else float(lambda_str)
+        loss = lambda_mse * mse + ld * direction + ls * strength
     return loss, {"residual_mse": mse.detach(), "direction": direction.detach(), "strength": strength.detach()}
 
 

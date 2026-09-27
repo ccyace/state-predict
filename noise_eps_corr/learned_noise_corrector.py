@@ -76,8 +76,23 @@ def batch_cos(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
 
 
 def correction_loss(
-    eq, ef, delta_pred, t, *, lambda_mse=1.0, lambda_cos=2.0, lambda_sr=0.3, t_cut=50,
+    eq,
+    ef,
+    delta_pred,
+    t,
+    *,
+    lambda_mse: float = 1.0,
+    lambda_geo: float = 0.5,
+    t_cut: int = 50,
+    lambda_cos: Optional[float] = None,
+    lambda_sr: Optional[float] = None,
 ) -> Tuple[torch.Tensor, Dict[str, float]]:
+    """Stage-II loss: L_err + λ_geo (L_dir + L_mag) by default (paper λ_geo=0.5).
+
+    Legacy separate weights remain available via ``lambda_cos`` / ``lambda_sr``;
+    if either is set, the loss becomes
+    ``λ_mse L_err + λ_cos L_dir + λ_sr L_mag`` instead of the paper form.
+    """
     delta_star = ef - eq
     eq_corr = eq + delta_pred
     l_mse = (delta_pred - delta_star).pow(2).mean(dim=(1, 2, 3))
@@ -88,11 +103,19 @@ def correction_loss(
     w = torch.ones_like(t, dtype=torch.float32)
     if int(t_cut) >= 999:
         w = torch.where(t >= 200, torch.full_like(w, 0.5), w)
-    per = lambda_mse * l_mse + lambda_cos * l_cos + lambda_sr * l_sr
+    if lambda_cos is None and lambda_sr is None:
+        per = float(lambda_mse) * l_mse + float(lambda_geo) * (l_cos + l_sr)
+    else:
+        lc = 2.0 if lambda_cos is None else float(lambda_cos)
+        ls = 0.3 if lambda_sr is None else float(lambda_sr)
+        per = float(lambda_mse) * l_mse + lc * l_cos + ls * l_sr
     loss = (per * w).mean()
     with torch.no_grad():
         stats = {
             "loss": float(loss.item()),
+            "l_mse": float(l_mse.mean().item()),
+            "l_dir": float(l_cos.mean().item()),
+            "l_mag": float(l_sr.mean().item()),
             "cos_before": float(batch_cos(eq, ef).mean().item()),
             "cos_after": float(batch_cos(eq_corr, ef).mean().item()),
             "delta_cos": float((batch_cos(eq_corr, ef) - batch_cos(eq, ef)).mean().item()),

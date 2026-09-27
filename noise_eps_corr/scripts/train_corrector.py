@@ -35,8 +35,24 @@ def main():
     p.add_argument("--t_cut", type=int, default=999)
     p.add_argument("--alpha", type=float, default=0.5)
     p.add_argument("--lambda_mse", type=float, default=1.0)
-    p.add_argument("--lambda_cos", type=float, default=2.0)
-    p.add_argument("--lambda_sr", type=float, default=0.3)
+    p.add_argument(
+        "--lambda_geo",
+        type=float,
+        default=0.5,
+        help="Paper Stage-II: L_err + lambda_geo*(L_dir+L_mag); default 0.5",
+    )
+    p.add_argument(
+        "--lambda_cos",
+        type=float,
+        default=None,
+        help="Legacy L_dir weight; if set, disables paper lambda_geo form",
+    )
+    p.add_argument(
+        "--lambda_sr",
+        type=float,
+        default=None,
+        help="Legacy L_mag weight; if set, disables paper lambda_geo form",
+    )
     p.add_argument("--lambda_t_ge_50", type=float, default=0.35)
     p.add_argument("--lambda_t_ge_200", type=float, default=0.15)
     p.add_argument("--init_ckpt", default="")
@@ -89,6 +105,7 @@ def main():
             loss, _ = correction_loss(
                 eq, ef, delta, t,
                 lambda_mse=args.lambda_mse,
+                lambda_geo=args.lambda_geo,
                 lambda_cos=args.lambda_cos,
                 lambda_sr=args.lambda_sr,
                 t_cut=args.t_cut,
@@ -112,6 +129,7 @@ def main():
                 loss, stats = correction_loss(
                     eq, ef, delta, t,
                     lambda_mse=args.lambda_mse,
+                    lambda_geo=args.lambda_geo,
                     lambda_cos=args.lambda_cos,
                     lambda_sr=args.lambda_sr,
                     t_cut=args.t_cut,

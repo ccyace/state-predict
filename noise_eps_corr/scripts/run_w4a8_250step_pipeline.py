@@ -10,7 +10,7 @@ t_cut=999.
 Defaults:
   - 3000 trajectories, 250-step quad (~230 grid steps/traj)
   - collect bs=64, train bs=32, 35 epochs, mmap, best_by val_loss
-  - full loss: lambda_mse=1.0, lambda_cos=2.0, lambda_sr=0.3
+  - paper Stage-II loss: L_err + lambda_geo*(L_dir+L_mag) (lambda_mse=1.0, lambda_geo=0.5)
   - data on D:/qdiff_data/train_data/ (large .pt files)
 
 Usage:
@@ -86,8 +86,7 @@ def main():
     p.add_argument("--lambda_t_ge_50", type=float, default=0.35)
     p.add_argument("--lambda_t_ge_200", type=float, default=0.15)
     p.add_argument("--lambda_mse", type=float, default=1.0)
-    p.add_argument("--lambda_cos", type=float, default=2.0)
-    p.add_argument("--lambda_sr", type=float, default=0.3)
+    p.add_argument("--lambda_geo", type=float, default=0.5)
     p.add_argument("--seed", type=int, default=1234)
     p.add_argument("--no_mmap", action="store_true")
     p.add_argument("--skip_collect", action="store_true")
@@ -170,10 +169,8 @@ def main():
             str(args.lambda_t_ge_200),
             "--lambda_mse",
             str(args.lambda_mse),
-            "--lambda_cos",
-            str(args.lambda_cos),
-            "--lambda_sr",
-            str(args.lambda_sr),
+            "--lambda_geo",
+            str(args.lambda_geo),
             "--best_by",
             "val_loss",
         ]
@@ -246,7 +243,7 @@ def main():
         f"  data             : {args.data}\n"
         f"  ckpt             : {ckpt_best}\n"
         f"  samples          : {args.sample_logdir}\n"
-        f"  loss             : mse={args.lambda_mse} cos={args.lambda_cos} sr={args.lambda_sr}\n",
+        f"  loss             : mse={args.lambda_mse} geo={args.lambda_geo}\n",
         flush=True,
     )
 
