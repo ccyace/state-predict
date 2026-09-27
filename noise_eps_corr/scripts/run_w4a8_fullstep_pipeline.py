@@ -78,7 +78,6 @@ def main():
     common_ptq = [
         "--config", "configs/cifar10.yml",
         "--cali_ckpt", args.cali_ckpt,
-        "--ode_scale_json", "ode_pre_scaling.json",
         "--cali_data_path", "cifar_sd1236_sample2048_allst.pt",
         "--weight_bit", "4",
         "--act_bit", "8",
@@ -166,8 +165,6 @@ def main():
                 "4",
                 "--act_bit",
                 "8",
-                "--ode_scale_json",
-                "ode_pre_scaling.json",
                 "--cali_ckpt",
                 args.cali_ckpt,
                 "--cali_data_path",

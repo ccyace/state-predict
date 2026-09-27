@@ -28,7 +28,7 @@ def run(name: str, cmd: list[str]) -> None:
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--cali_ckpt", default="cifar_w4a8_ckpt.pth")
-    p.add_argument("--ode_scale_json", default="", help="set ode_pre_scaling.json if ckpt needs it")
+    p.add_argument("--ode_scale_json", default="", help="deprecated; ODE pre-scaling removed from this checkout")
     p.add_argument("--num_trajectories", type=int, default=5000)
     p.add_argument("--collect_batch_size", type=int, default=64)
     p.add_argument("--label_batch_size", type=int, default=32)

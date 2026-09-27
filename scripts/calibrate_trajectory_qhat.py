@@ -21,23 +21,19 @@ from ddim.functions.ckpt_util import get_ckpt_path, load_ddim_state_dict
 from ddim.models.diffusion import Model
 from qdiff import QuantModel
 from qdiff.adaptive_rounding import AdaRoundQuantizer
-from qdiff.joint_sa_opt import JointSAConfig, load_joint_sa_for_sampling
-from qdiff.ode_pre_scaling import (
-    absorb_ode_weights_into_float_model,
-    attach_ode_input_scales_to_quant_model,
-    attach_ode_output_scales_to_quant_model,
-    attach_resblock_shortcut_scales,
-    load_ode_absorb_mode,
-    load_ode_absorbed_layers,
-    load_ode_scales,
-    load_ode_shortcut_inv_scales,
-)
 from qdiff.quant_layer import UniformAffineQuantizer
 from qdiff.trajectory_error import build_ddim_seq, calibrate_q_hat, save_q_hat
 from qdiff.utils import get_train_samples, resume_cali_model
 from sample_diffusion_ddim import get_beta_schedule
 
 logger = logging.getLogger(__name__)
+
+
+def _require_ode_pre_scaling():
+    raise RuntimeError(
+        "ODE pre-scaling / JointSA helpers were removed from this checkout. "
+        "Omit --ode_scale_json / --joint_sa_resume, or restore that experimental branch."
+    )
 
 
 def dict2namespace(config):
@@ -79,10 +75,7 @@ def load_float_model(config, device, args):
     print(f"  [load 2/4] float teacher ready ({time.perf_counter() - t0:.1f}s)", flush=True)
 
     if args.ode_scale_json:
-        deploy = load_ode_scales(args.ode_scale_json)
-        absorb_mode = args.ode_absorb_mode or load_ode_absorb_mode(args.ode_scale_json)
-        absorb_ode_weights_into_float_model(model, deploy, mode=absorb_mode or "dilate")
-        logger.info("Applied ODE weight absorption to float teacher (mode=%s)", absorb_mode)
+        _require_ode_pre_scaling()
     return model
 
 
@@ -90,17 +83,7 @@ def load_quant_model(config, device, args, float_model):
     import time
 
     if args.joint_sa_resume:
-        if not args.cali_ckpt or not args.ode_scale_json or not args.brecq_ckpt:
-            raise ValueError("joint_sa_resume requires --cali_ckpt, --ode_scale_json, --brecq_ckpt")
-        cfg = JointSAConfig(
-            weight_bit=args.weight_bit,
-            act_bit=args.act_bit,
-            a_sym=args.a_sym,
-        )
-        qnn = load_joint_sa_for_sampling(
-            config, device, args.brecq_ckpt, args.cali_ckpt, args.ode_scale_json, cfg
-        )
-        return qnn
+        _require_ode_pre_scaling()
 
     t0 = time.perf_counter()
     print("  [load 3/4] wrapping QuantModel ...", flush=True)
@@ -122,15 +105,7 @@ def load_quant_model(config, device, args, float_model):
     qnn.eval()
 
     if args.ode_scale_json:
-        deploy = load_ode_scales(args.ode_scale_json)
-        absorb_mode = args.ode_absorb_mode or load_ode_absorb_mode(args.ode_scale_json)
-        absorbed = load_ode_absorbed_layers(args.ode_scale_json) or set()
-        shortcut_inv = load_ode_shortcut_inv_scales(args.ode_scale_json)
-        if absorb_mode == "dilate":
-            attach_ode_input_scales_to_quant_model(qnn, absorbed_layers=absorbed)
-        else:
-            attach_ode_output_scales_to_quant_model(qnn, deploy, absorbed_layers=absorbed)
-        attach_resblock_shortcut_scales(qnn, shortcut_inv=shortcut_inv)
+        _require_ode_pre_scaling()
 
     if not args.cali_ckpt:
         raise ValueError("--cali_ckpt is required for quantized model loading")

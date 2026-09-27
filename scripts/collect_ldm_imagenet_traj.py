@@ -77,18 +77,8 @@ def collect(
     time_range = np.flip(timesteps)
     total = timesteps.shape[0]
 
-    # EfficientDM TALSQ: each UNet forward decrements current_step. Collect does an
-    # extra q-forward to log eq before p_sample_ddim — restore indices so the real
-    # step only advances once (otherwise 20-step ckpt wraps after ~10 DDIM steps).
-    try:
-        from PTQD.imagenet256.efficientdm_adapter import reset_efficientdm_temporal_steps
-    except Exception:  # pragma: no cover
-        reset_efficientdm_temporal_steps = None
-
     for _ in trange(n_batches, desc="collect LDM traj"):
         b = min(batch_size, n_traj - traj_id)
-        if reset_efficientdm_temporal_steps is not None:
-            reset_efficientdm_temporal_steps(qnn)
         x = torch.randn(b, C, H, W, device=device)
         classes = torch.randint(0, 1000, (b,), device=device)
         c = fp_model.get_learned_conditioning({fp_model.cond_stage_key: classes})
@@ -174,48 +164,10 @@ def main():
     p.set_defaults(quant_act=True)
     p.add_argument("--a_sym", action="store_true", default=True)
     p.add_argument("--output", required=True)
-    p.add_argument(
-        "--efficientdm_ckpt",
-        type=str,
-        default="",
-        help="If set, load EfficientDM W4A4 (etc.) instead of qdiff --cali_ckpt",
-    )
-    p.add_argument("--efficientdm_steps", type=int, default=20)
-    p.add_argument("--efficientdm_root", type=str, default="", help="EfficientDM checkout (or set EFFICIENTDM_HOME)")
-    p.add_argument("--efficientdm_weight_bit", type=int, default=4)
-    p.add_argument("--efficientdm_act_bit", type=int, default=4)
     args = p.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     fp_model, config = load_ldm(args.ldm_config, args.fp_ckpt, device)
-
-    if args.efficientdm_ckpt:
-        from PTQD.imagenet256.efficientdm_adapter import attach_efficientdm
-
-        q_host, _ = load_ldm(args.ldm_config, args.fp_ckpt, device)
-        attach_efficientdm(
-            q_host,
-            args.efficientdm_ckpt,
-            num_steps=int(args.efficientdm_steps),
-            weight_bit=int(args.efficientdm_weight_bit),
-            act_bit=int(args.efficientdm_act_bit),
-            efficientdm_root=args.efficientdm_root,
-            device=device,
-        )
-        qnn = q_host.model.diffusion_model
-        fp_teacher, _ = load_ldm(args.ldm_config, args.fp_ckpt, device)
-        collect(
-            fp_teacher,
-            qnn,
-            n_traj=args.n_traj,
-            batch_size=args.batch_size,
-            steps=args.steps,
-            eta=args.eta,
-            cfg_scale=args.scale,
-            device=device,
-            out_path=args.output,
-        )
-        return
 
     wq = {"n_bits": args.weight_bit, "channel_wise": True, "scale_method": "max"}
     aq = {

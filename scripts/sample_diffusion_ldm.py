@@ -479,27 +479,6 @@ def get_parser():
         default="",
         help="when running PTQ (no --resume), also save qnn state_dict here",
     )
-    parser.add_argument(
-        "--efficientdm_ckpt",
-        type=str,
-        default="",
-        help="EfficientDM full state_dict (e.g. quantw4a4_20steps_efficientdm.pth); "
-             "mutually exclusive with --ptq/--resume",
-    )
-    parser.add_argument(
-        "--efficientdm_steps",
-        type=int,
-        default=20,
-        help="TALSQ length baked into EfficientDM ckpt (should match -c)",
-    )
-    parser.add_argument(
-        "--efficientdm_root",
-        type=str,
-        default="",
-        help="path to EfficientDM checkout (or set EFFICIENTDM_HOME)",
-    )
-    parser.add_argument("--efficientdm_weight_bit", type=int, default=4)
-    parser.add_argument("--efficientdm_act_bit", type=int, default=4)
     return parser
 
 
@@ -606,25 +585,6 @@ if __name__ == "__main__":
 
     # print(model.model)
     is_cond = opt.cond or (config.model.params.get("cond_stage_config") not in (None, "__is_unconditional__"))
-
-    if opt.efficientdm_ckpt:
-        if opt.ptq or opt.resume or opt.resume_w:
-            raise ValueError("--efficientdm_ckpt cannot be combined with --ptq/--resume/--resume_w")
-        if int(opt.custom_steps) != int(opt.efficientdm_steps):
-            logger.warning(
-                f"EfficientDM TALSQ length is {opt.efficientdm_steps} but -c/--custom_steps="
-                f"{opt.custom_steps}; temporal act scales will mis-align. Prefer -c {opt.efficientdm_steps}."
-            )
-        from PTQD.imagenet256.efficientdm_adapter import attach_efficientdm
-        attach_efficientdm(
-            model,
-            opt.efficientdm_ckpt,
-            num_steps=int(opt.efficientdm_steps),
-            weight_bit=int(opt.efficientdm_weight_bit),
-            act_bit=int(opt.efficientdm_act_bit),
-            efficientdm_root=opt.efficientdm_root,
-            device=torch.device("cuda") if gpu else torch.device("cpu"),
-        )
 
     if opt.ptq:
         if opt.quant_mode == 'qdiff':

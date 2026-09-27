@@ -30,7 +30,6 @@ from qdiff.ddim_helpers import ddim_update, ddim_update_vsc
 from qdiff.joint_eps_dt_corrector import load_joint_corrector
 from qdiff.trajectory_error import build_ddim_seq
 from sample_diffusion_ddim import get_beta_schedule
-from state_aware_temporal_joint.joint_feature_corrector import JointFeatureHooks, load_feature_corrector
 from state_aware_temporal_joint.temporal_path import keep_temporal_path_float
 from state_aware_temporal_joint.time_corrected_residual import load_residual
 
@@ -398,16 +397,14 @@ def main() -> None:
         n_mod = keep_temporal_path_float(qnn)
         print(f"FP temporal path enabled for {n_mod} modules", flush=True)
 
-    feature_hooks = None
     if args.joint_feature_ckpt:
-        feat, _meta = load_feature_corrector(args.joint_feature_ckpt, device)
-        feature_hooks = JointFeatureHooks(qnn, feat)
-        feature_hooks.attach()
-        print(f"Joint feature correction enabled for {len(feat.config.block_channels)} blocks", flush=True)
+        raise NotImplementedError(
+            "Joint feature corrector was removed from this checkout; omit --joint_feature_ckpt."
+        )
 
     if not args.disable_adapter:
         raise NotImplementedError(
-            "Adapter sampling helpers are unavailable in this checkout; pass --disable_adapter."
+            "Adapter sampling helpers were removed from this checkout; pass --disable_adapter."
         )
 
     corrector = None

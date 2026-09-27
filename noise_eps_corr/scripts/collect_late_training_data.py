@@ -112,7 +112,7 @@ def main():
         "--ode_scale_json",
         type=str,
         default="",
-        help="empty for official Q-Diffusion ckpt; set ode_pre_scaling.json for ODE-dilate PTQ",
+        help="empty for official Q-Diffusion ckpt (ODE pre-scaling removed from this checkout)",
     )
     p.add_argument("--ode_absorb_mode", type=str, default="")
     p.add_argument("--brecq_ckpt", type=str, default="")
